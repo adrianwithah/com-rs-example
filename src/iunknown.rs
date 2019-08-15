@@ -31,7 +31,7 @@ pub trait IUnknown {
     fn release(&self) -> u32;
 }
 
-impl IUnknown for ComPtr<IUnknown> {
+impl <T: ComInterface + ?Sized> IUnknown for ComPtr<T> {
     fn query_interface(&mut self, riid: *const IID, ppv: *mut *mut c_void) -> HRESULT {
         let itf_ptr = self.into_raw() as *mut IUnknownVPtr;
         unsafe { ((**itf_ptr).0.QueryInterface)(itf_ptr, riid, ppv) }

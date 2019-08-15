@@ -19,7 +19,7 @@ impl ComInterface for IAnimal {
 
 pub type IAnimalVPtr = *const IAnimalVTable;
 
-impl<IAnimal> ComPtr<IAnimal> {
+impl IAnimal for ComPtr<IAnimal> {
     fn eat(&mut self) -> HRESULT {
         let itf_ptr = self.into_raw() as *mut IAnimalVPtr;
         unsafe { ((**itf_ptr).1.Eat)(itf_ptr) }
@@ -27,7 +27,6 @@ impl<IAnimal> ComPtr<IAnimal> {
 }
 
 // impl IUnknown for ComPtr<IAnimal> {
-    
 // }
 
 #[repr(C)]
