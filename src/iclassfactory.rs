@@ -48,24 +48,6 @@ impl IClassFactory for ComPtr<IClassFactory> {
     }
 }
 
-// Opt-ed not to implement casting between ComPtr<IClassFactory> and ComPtr<IUnknown>
-// as it will not be needed with our inheritance model.
-impl IUnknown for ComPtr<IClassFactory> {
-    fn query_interface(&mut self, riid: *const IID, ppv: *mut *mut c_void) -> HRESULT {
-        let itf_ptr = self.into_raw() as *mut IUnknownVPtr;
-        unsafe { ((**itf_ptr).0.QueryInterface)(itf_ptr, riid, ppv) }
-    }
-
-    fn add_ref(&self) -> u32 {
-        let itf_ptr = self.into_raw() as *mut IUnknownVPtr;
-        unsafe { ((**itf_ptr).0.AddRef)(itf_ptr) }
-    }
-
-    fn release(&self) -> u32 {
-        let itf_ptr = self.into_raw() as *mut IUnknownVPtr;
-        unsafe { ((**itf_ptr).0.Release)(itf_ptr) }
-    }
-}
 
 impl ComInterface for IClassFactory {
     const IID: IID = IID_ICLASS_FACTORY;
